@@ -1,0 +1,19 @@
+Http
+
+https://flutter.dev/docs/cookbook/networking/fetch-data
+
+Http Interceptor
+
+https://pub.dev/packages/http_interceptor
+
+-----------------------------------------------------------
+
+Caso queira acessar como um endereço público, que não exige a conexão da mesma rede,
+você pode considerar o ngrok.
+Esse aplicativo permite configurar um web hook capaz de mapear uma porta do seu computador
+com um endereço público do serviço do ngrok.
+
+https://ngrok.com/
+
+Como compartilhar seu localhost de forma simplificada com o Ngrok
+https://cursos.alura.com.br/como-compartilhar-seu-localhost-de-forma-simplificada-com-o-ngrok-c7

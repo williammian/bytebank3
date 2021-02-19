@@ -7,19 +7,107 @@ Para fazer essa conversão, primeiro precisaremos pegar o objeto JSON e convert�
 O Dart nos disponibiliza um pacote de conversão (dart:convert) que nos possibilita tanto passar uma string em JSON para um objeto Dart (jsonDecode())
 quanto para passar um objeto Dart para uma string JSON (jsonEncode()).
 
+------------------------------------------------------------------------
+
 Ex 1 - String json to object dart
 
-final List<dynamic> decodedJson = jsonDecode(response.body);
-  final List<Transaction> transactions = List();
-  for (Map<String, dynamic> transactionJson in decodedJson) {
-    final Map<String, dynamic> contactJson = transactionJson['contact'];
-    final Transaction transaction = Transaction(
-      contactJson['value'],
-      Contact(
-        0,
-        contactJson['name'],
-        contactJson['accountNumber'],
-      ),
-    );
-    transactions.add(transaction);
+List<Transaction> _toTransactions(Response response) {
+    final List<dynamic> decodedJson = jsonDecode(response.body);
+    final List<Transaction> transactions = List();
+    for (Map<String, dynamic> transactionJson in decodedJson) {
+      final Map<String, dynamic> contactJson = transactionJson['contact'];
+      final Transaction transaction = Transaction(
+        transactionJson['value'],
+        Contact(
+          0,
+          contactJson['name'],
+          contactJson['accountNumber'],
+        ),
+      );
+      transactions.add(transaction);
+    }
+    return transactions;
   }
+
+  Transaction _toTransaction(Response response) {
+      Map<String, dynamic> json = jsonDecode(response.body);
+      final Map<String, dynamic> contactJson = json['contact'];
+      return Transaction(
+        contactJson['value'],
+        Contact(
+          0,
+          contactJson['name'],
+          contactJson['accountNumber'],
+        ),
+      );
+    }
+
+--------------------------------------------------------------------------------
+
+Ex 2 - object dart to Map to Json
+
+Map<String, dynamic> _toMap(Transaction transaction) {
+    final Map<String, dynamic> transactionMap = {
+      'value': transaction.value,
+      'contact': {
+        'name': transaction.contact.name,
+        'accountNumber': transaction.contact.accountNumber,
+      }
+    };
+    return transactionMap;
+  }
+
+Map<String, dynamic> transactionMap = _toMap(transaction);
+    final String transactionJson = jsonEncode(transactionMap);
+
+-------------------------------------------------------------------------------
+
+https://flutter.dev/docs/development/data-and-backend/json
+
+JSON and serialization
+
+Serializing JSON manually using dart:convert
+
+class Transaction {
+  final double value;
+  final Contact contact;
+
+  Transaction(
+      this.value,
+      this.contact,
+      );
+
+  Transaction.fromJson(Map<String, dynamic> json) :
+      value = json['value'],
+      contact = Contact.fromJson(json['contact']);
+
+  Map<String, dynamic> toJson() =>
+      {
+        'value': value,
+        'contact': contact.toJson(),
+      };
+}
+
+class Contact {
+  final int id;
+  final String name;
+  final int accountNumber;
+
+  Contact(
+    this.id,
+    this.name,
+    this.accountNumber,
+  );
+
+  Contact.fromJson(Map<String, dynamic> json) :
+        id = json['id'],
+        name = json['name'],
+        accountNumber = json['accountNumber'];
+
+  Map<String, dynamic> toJson() =>
+      {
+        'id' : id,
+        'name': name,
+        'accountNumber': accountNumber,
+      };
+}

@@ -1,3 +1,4 @@
+import 'package:bytebank3/componentes/transaction_auth_dialog.dart';
 import 'package:bytebank3/http/webclients/transaction_webclient.dart';
 import 'package:bytebank3/models/contact.dart';
 import 'package:bytebank3/models/transaction.dart';
@@ -61,10 +62,14 @@ class _TransactionFormState extends State<TransactionForm> {
                     child: Text('Transfer'), onPressed: () {
                       final double value = double.tryParse(_valueController.text);
                       final transactionCreated = Transaction(value, widget.contact);
-                      _webClient.save(transactionCreated).then((transactionReceived) {
-                        if(transactionReceived != null) {
-                          Navigator.pop(context);
-                        }
+                      showDialog(context: context, builder: (context) {
+                        return TransactionAuthDialog(onConfirm: (String password) {
+                          _webClient.save(transactionCreated, password).then((transactionReceived) {
+                            if(transactionReceived != null) {
+                              Navigator.pop(context);
+                            }
+                          });
+                        },);
                       });
                   },
                   ),

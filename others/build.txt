@@ -1,0 +1,8 @@
+Build Android (Flutter)
+
+Android Studio
+Build > Flutter > Build APK
+
+Artefatos gerados em
+
+build, app, outputs, flutter-apk

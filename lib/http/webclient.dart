@@ -8,4 +8,4 @@ final Client client = HttpClientWithInterceptor.build(
   requestTimeout: Duration(seconds: 5),
 );
 
-const String baseUrl = 'http://192.168.15.21:8080/transactions';
+const String baseUrl = 'http://192.168.0.6:8080/transactions';
